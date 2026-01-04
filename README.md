@@ -79,6 +79,17 @@ print(ModerationPolicy.getDisplayString(report));
 
 This layered design keeps concerns separated: Flutter widgets handle UX/state, the isolate manages concurrency and prompt budgeting, the Dart FFI layer encapsulates native bindings, and the C++ wrapper deals with llama.cpp internals optimized for on-device inference.
 
+## Final Verdict
+I implemented this fully on-device LLM setup in a Flutter app, running locally on an Android phone (Pixel 7). The goal was straightforward: integrate llama.cpp, load a quantized model (~600 MB), and see whether a general chat experience could be delivered reliably without any cloud inference.
+
+From a purely technical perspective, everything worked. The model loaded, prompts were processed, tokens streamed back, and the system behaved correctly under ideal conditions. From a product and engineering perspective, however, the conclusion was unavoidable: this is not production-viable today for general chat on mobile hardware.
+
+Despite aggressive optimization—reduced context windows, limited history, careful batching, memory mapping, and conservative threading—the experience remained highly inconsistent. Most requests timed out or stalled; occasional responses succeeded, but not with the latency or reliability users would tolerate. This wasn’t a configuration mistake or tooling gap. It was a clear illustration of current mobile CPU and memory constraints when running even small LLMs interactively.
+
+The important nuance is that this does not mean on-device inference is pointless. It can work well for tightly bounded tasks such as moderation, classification, or short structured outputs, especially where privacy is critical. What does not work today is trying to replicate a cloud-grade conversational assistant entirely offline on a phone.
+
+The experiment was still a success—because it replaced assumptions with evidence. Sometimes the most valuable engineering outcome is a well-reasoned “**not yet**,” backed by real implementation experience rather than theory.
+
 ## Screenshots
 
 ### Model Setup
