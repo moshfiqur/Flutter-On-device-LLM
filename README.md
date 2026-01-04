@@ -78,3 +78,23 @@ print(ModerationPolicy.getDisplayString(report));
 4. When generation finishes (EOS, stop sequence, cancellation, or timeout), the worker sends a final `isDone` response. The UI then resets its state and awaits the next input.
 
 This layered design keeps concerns separated: Flutter widgets handle UX/state, the isolate manages concurrency and prompt budgeting, the Dart FFI layer encapsulates native bindings, and the C++ wrapper deals with llama.cpp internals optimized for on-device inference.
+
+## Screenshots
+
+### Model Setup
+![Model setup screen showing curated GGUF downloads](resources/6.png)
+
+### Empty Chat
+![Chat UI waiting for the first prompt](resources/1.png)
+
+### Sending a Prompt
+![User message queued for generation](resources/2.png)
+
+### Streaming Response
+![Assistant streaming reply with tokens-per-second metric](resources/3.png)
+
+### Model Settings
+![Installed model list with delete action](resources/4.png)
+
+### Delete Confirmation
+![Confirmation dialog before deleting a model](resources/5.png)
